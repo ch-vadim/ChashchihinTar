@@ -1,4 +1,5 @@
 ☻ File was create with TarUtility
+2 3 6
 ☻ Name of file ffff.txt
 qwerty
 tttttt
@@ -11,10 +12,5 @@ kak
 zhe
 bilo
 slozhno
-hochu
-na
-innovatiku
 no
-radi
-marata
-ostanus
+interesno

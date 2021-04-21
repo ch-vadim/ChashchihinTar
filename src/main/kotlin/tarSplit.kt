@@ -4,25 +4,27 @@ import java.lang.IllegalArgumentException
 
 fun tarSplit(nameFile: String) {
     val file = try{
-        File(nameFile).readLines()
+        File(nameFile).bufferedReader()
     } catch (e: IOException) {
         throw IllegalArgumentException("File $nameFile could not be opened")
     }
-    if (file[0] != "☻ File was create with TarUtility") throw IllegalArgumentException("This file did't create with TarUtility")
-    var i = 2
-    var name = file[1].substring(15)
-    var result = File(name).bufferedWriter()
-    while (i < file.size) {
-        if (file[i].startsWith("☻ Name of file ")) {
-            result.close()
-            name = file[i].substring(15)
-            result = File(name).bufferedWriter()
-            i++
-            continue
+    if (file.readLine() != "☻ File was create with TarUtility") throw IllegalArgumentException("This file did't create with TarUtility")
+    var str = file.readLine()
+    val listOfSize = if (str.contains(Regex("""[^\d ]"""))) {
+        throw IllegalArgumentException()
+    } else str.split(" ")
+    for (e in listOfSize) {
+        val name = file.readLine() ?: throw IllegalArgumentException()
+        if (!name.startsWith("☻ Name of file ")) throw IllegalArgumentException()
+        val result = File(name.substring(15)).bufferedWriter()
+        repeat(e.toInt()) {
+            str = file.readLine() ?: throw IllegalArgumentException()
+            result.write(str)
+            result.newLine()
         }
-        result.write(file[i])
-        result.newLine()
-        i++
+        result.close()
     }
-    result.close()
+    if (file.readLine() != null) throw IllegalArgumentException()
+    file.close()
+
 }

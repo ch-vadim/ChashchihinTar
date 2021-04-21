@@ -13,10 +13,11 @@ class Test {
 
     @Test
     fun tarConnect() {
-        main(arrayOf("tar", "input/rt.txt", "input/pr.txt", "-out", "input/resf.txt"))
+        main(arrayOf("input/rt.txt", "input/pr.txt", "-out", "input/resf.txt"))
         assertFileContent(
             "input/resf.txt",
             """☻ File was create with TarUtility
+2 3
 ☻ Name of file input/rt.txt
 qwerty
 tttttt
@@ -25,12 +26,12 @@ truipfjfvredv
 wgrsver
 vfdfsvger"""
         )
-        File("input/resf").delete()
+        File("input/resf.txt").delete()
     }
 
     @Test
     fun tarSplit() {
-        main(arrayOf("tar", "-u", "input/res2.txt"))
+        main(arrayOf("-u", "input/res2.txt"))
         assertFileContent(
             "ffff.txt",
             """qwerty
@@ -48,13 +49,8 @@ vfdfsvger"""
 zhe
 bilo
 slozhno
-hochu
-na
-innovatiku
 no
-radi
-marata
-ostanus"""
+interesno"""
         )
         File("ffff.txt").delete()
         File("ttttt.txt").delete()
@@ -63,11 +59,9 @@ ostanus"""
     }
     @Test
     fun testExceptions() {
-        assertThrows(IllegalArgumentException::class.java) { main(arrayOf("tar", "tar", "tar")) }
-        assertThrows(IllegalArgumentException::class.java) { main(arrayOf("ttar", "-u", "input/res2.txt")) }
-        assertThrows(IllegalArgumentException::class.java) { main(arrayOf("tar")) }
-        assertThrows(IllegalArgumentException::class.java) { main(arrayOf("tar", "-u", "input/rt", "input/pr", "-out", "input/resf" )) }
-        assertThrows(IllegalArgumentException::class.java) { main(arrayOf("tar", "input/rt", "-out", "input/resf" )) }
+        assertThrows(IllegalArgumentException::class.java) { main(arrayOf()) }
+        assertThrows(IllegalArgumentException::class.java) { main(arrayOf("-u", "input/rt", "input/pr", "-out", "input/resf" )) }
+        assertThrows(IllegalArgumentException::class.java) { main(arrayOf("input/rt.txt", "-out", "input/resf.txt" )) }
 
     }
 }

@@ -8,23 +8,26 @@ fun tarSplit(nameFile: String) {
     } catch (e: IOException) {
         throw IllegalArgumentException("File $nameFile could not be opened")
     }
-    if (file.readLine() != "☻ File was create with TarUtility") throw IllegalArgumentException("This file did't create with TarUtility")
+    val magicConstant = "☻ Name of file "
+    if (file.readLine() != "☻ File was create with TarUtility")
+        throw IllegalArgumentException("This file did't create with TarUtility")
     var str = file.readLine()
     val listOfSize = if (str.contains(Regex("""[^\d ]"""))) {
-        throw IllegalArgumentException()
+        throw IllegalArgumentException("Error when running the utility")
     } else str.split(" ")
     for (e in listOfSize) {
-        val name = file.readLine() ?: throw IllegalArgumentException()
-        if (!name.startsWith("☻ Name of file ")) throw IllegalArgumentException()
-        val result = File(name.substring(15)).bufferedWriter()
-        repeat(e.toInt()) {
-            str = file.readLine() ?: throw IllegalArgumentException()
-            result.write(str)
-            result.newLine()
+        val name = file.readLine() ?: throw IllegalArgumentException("Error when running the utility")
+        if (!name.startsWith(magicConstant))
+            throw IllegalArgumentException("Error when running the utility")
+        File(name.substring(magicConstant.length)).bufferedWriter().use { writer ->
+            repeat(e.toInt()) {
+                str = file.readLine() ?: throw IllegalArgumentException("Error when running the utility")
+                writer.write(str)
+                writer.newLine()
+            }
         }
-        result.close()
     }
-    if (file.readLine() != null) throw IllegalArgumentException()
+    if (file.readLine() != null) throw IllegalArgumentException("Error when running the utility")
     file.close()
 
 }

@@ -8,7 +8,7 @@ fun tarSplit(nameFile: String) {
     } catch (e: IOException) {
         throw IllegalArgumentException("File $nameFile could not be opened")
     }
-    val magicConstant = "☻ Name of file "
+    val magicConstant = "☻ Name of file " //changed here?, change in tarConnect too
     if (file.readLine() != "☻ File was create with TarUtility")
         throw IllegalArgumentException("This file did't create with TarUtility")
     var str = file.readLine()

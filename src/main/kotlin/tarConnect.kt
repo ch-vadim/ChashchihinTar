@@ -13,7 +13,7 @@ import java.lang.IllegalArgumentException
 */
 
 fun tarConnect(input: MutableList<String>, output: String) {
-    val magicConstant = "☻ Name of file "
+    val magicConstant = "☻ Name of file " //changed here?, change in tarSplit too
     if (input.size < 2) throw IllegalArgumentException("Count of file must be 2 and more")
     var sizeFile:Int
     val listOfSize = mutableListOf<Int>()

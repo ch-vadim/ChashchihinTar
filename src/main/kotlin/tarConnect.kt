@@ -1,5 +1,4 @@
 import java.io.File
-import java.io.IOException
 import java.lang.IllegalArgumentException
 
 /*Format of file:
@@ -13,35 +12,31 @@ import java.lang.IllegalArgumentException
 */
 
 fun tarConnect(input: MutableList<String>, output: String) {
-    val magicConstant = "☻ Name of file " //changed here?, change in tarSplit too
+    val magicConstants = MagicConstants()
     if (input.size < 2) throw IllegalArgumentException("Count of file must be 2 and more")
     var sizeFile:Int
     val listOfSize = mutableListOf<Int>()
-    File("resultTextForTar.txt").bufferedWriter().use { writer ->
+    val tempFile = createTempFile("resultFile", ".txt", null)
+    tempFile.bufferedWriter().use { writer ->
         for (nameFile in input) {
-            val file = try {
-                File(nameFile).bufferedReader()
-            } catch (e: IOException) {
-                throw IllegalArgumentException("File $nameFile could not be opened")
+            File(nameFile).bufferedReader().use { reader ->
+                sizeFile = 0
+                writer.write("${magicConstants.splitConstant}$nameFile\n")
+                reader.forEachLine {
+                    sizeFile++
+                    writer.write("$it\n")
+                }
+                listOfSize.add(sizeFile)
             }
-            sizeFile = 0
-            writer.write("$magicConstant$nameFile\n")
-            file.forEachLine {
-                sizeFile++
-                writer.write("$it\n")
-            }
-            listOfSize.add(sizeFile)
         }
-
     }
     File(output).bufferedWriter().use { writer ->
-        writer.write("☻ File was create with TarUtility\n")
+        writer.write("${magicConstants.prefixConstant}\n")
         writer.write(listOfSize.joinToString(separator = " "))
         writer.newLine()
-        File("resultTextForTar.txt").forEachLine {
-            writer.write(it)
-            writer.newLine()
+        tempFile.bufferedReader().use { reader ->
+            reader.forEachLine { writer.write("$it\n") }
         }
     }
-    File("resultTextForTar.txt").delete()
+    tempFile.delete()
 }
